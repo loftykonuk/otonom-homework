@@ -3,26 +3,34 @@ import struct
 import time
 
 
-def send(data1, data2, data3):
-    client_socket1.sendall(data1)
-    client_socket1.sendall(data2)
-    client_socket1.sendall(data3)
-
-
 host = '34.234.82.161'
 port = 13571
 
 cn = "lofty"
-cn = cn.ljust(32)
+cn = cn.encode('utf-8')
+
+if len(cn) < 32:
+    padding_size = 32 - len(cn)
+    padding = b'\x00' * padding_size
+    cn += padding
+
 tn = "topic konuk"
-tn = tn.ljust(32)
-a = 1000
-data3 = struct.pack('>I', a)
+tn = tn.encode('utf-8')
+
+if len(tn) < 32:
+    padding_size = 32 - len(tn)
+    padding = b'\x00' * padding_size
+    tn += padding
+
+a = 11
+data3 = struct.pack('!I', a)
 
 
 client_socket1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket1.connect((host, port))
-send(cn, tn, data3)
+client_socket1.sendall(cn)
+client_socket1.sendall(tn)
+client_socket1.sendall(data3)
 
 while True:
     client_socket1.sendall("Hello World".encode('utf-8'))
