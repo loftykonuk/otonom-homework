@@ -22,7 +22,8 @@ data3 = struct.pack('>I', a)
 
 client_socket1 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client_socket1.connect((host, port))
+send(cn, tn, data3)
 
 while True:
-    send(cn, tn, data3)
+    client_socket1.sendall("Hello World".encode('utf-8'))
     time.sleep(5)
